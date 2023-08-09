@@ -27,13 +27,13 @@ public abstract class ClientPlayNetworkHandlerMixin {
     }
 
     @Inject(at = @At("HEAD"), method = "sendPacket(Lnet/minecraft/network/packet/Packet;)V", cancellable = true)
-    public void onSendPacket(Packet packet, CallbackInfo info) {
+    public void onSendPacket(Packet<?> packet, CallbackInfo info) {
         SendPacketEvent packetEvent = EventStore.sendPacketEvent(packet);
         NugClient.eventBus.post(packetEvent);
         if(packetEvent.isCancelled()) info.cancel();
     }
 
-    @Inject(method = "sendChatMessage", at = @At("HEAD"), cancellable = true)
+    @Inject(at = @At("HEAD"), method = "sendChatMessage", cancellable = true)
     private void onSendChatMessage(String content, CallbackInfo info) {
         if(content.startsWith(Config.instance.prefix)) {
             CommandDispatcher.run(content.substring(Config.instance.prefix.length()));

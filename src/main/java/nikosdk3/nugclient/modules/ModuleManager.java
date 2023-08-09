@@ -9,19 +9,13 @@ import nikosdk3.nugclient.modules.movement.*;
 import nikosdk3.nugclient.modules.player.AutoFish;
 import nikosdk3.nugclient.modules.player.DeathPos;
 import nikosdk3.nugclient.modules.player.FastUse;
-import nikosdk3.nugclient.modules.render.ActiveModules;
-import nikosdk3.nugclient.modules.render.FullBright;
-import nikosdk3.nugclient.modules.render.Info;
-import nikosdk3.nugclient.modules.render.Position;
+import nikosdk3.nugclient.modules.render.*;
 import nikosdk3.nugclient.utils.Utils;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.*;
 
 public class ModuleManager {
-    public static ModuleManager INSTANCE;
-    public static final Category[] CATEGORIES = {Category.Combat, Category.Movement, Category.Misc, Category.Player, Category.Render, Category.Setting};
-
     private static List<Module> modules = new ArrayList<>();
     private static Map<Category, List<Module>> groups = new HashMap<>();
     private static List<Module> active = new ArrayList<>();
@@ -134,5 +128,7 @@ public class ModuleManager {
         addModule(new FullBright());
         addModule(new Info());
         addModule(new Position());
+        addModule(new StorageESP());
+        addModule(new XRay());
     }
 }

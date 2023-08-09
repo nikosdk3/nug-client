@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 
 @Mixin(LightmapTextureManager.class)
-public class LightmapTextureManagerMixin {
+public abstract class LightmapTextureManagerMixin {
     @ModifyArg(method = "update", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/texture/NativeImage;setColor(III)V"), index = 2)
     private int update(int color) {
         if (ModuleManager.get(FullBright.class).isActive()) return 0xFFFFFFFF;

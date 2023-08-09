@@ -1,18 +1,35 @@
 package nikosdk3.nugclient.utils;
 
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import net.minecraft.world.chunk.Chunk;
+import nikosdk3.nugclient.mixin.ClientPlayNetworkHandlerAccessor;
 import nikosdk3.nugclient.mixininterface.IMinecraftClient;
 import nikosdk3.nugclient.modules.Module;
 import nikosdk3.nugclient.modules.ModuleManager;
+import nikosdk3.nugclient.utils.world.BlockEntityIterator;
+import nikosdk3.nugclient.utils.world.ChunkIterator;
 
 import java.util.Random;
 
 public class Utils {
     private static final Random random = new Random();
     public static MinecraftClient mc;
+
+    public static Iterable<Chunk> chunks() {
+        return ChunkIterator::new;
+    }
+
+    public static Iterable<BlockEntity> blockEntities() {
+        return BlockEntityIterator::new;
+    }
+
+    public static int getRenderDistance() {
+        return Math.max(mc.options.getViewDistance().getValue(), ((ClientPlayNetworkHandlerAccessor) mc.getNetworkHandler()).getChunkLoadDistance());
+    }
 
     public static boolean canUpdate() {
         return mc.world != null && mc.player != null;

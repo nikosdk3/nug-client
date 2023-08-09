@@ -19,9 +19,6 @@ public abstract class MinecraftClientMixin implements IMinecraftClient {
     public ClientWorld world;
 
     @Shadow
-    private static int currentFps;
-
-    @Shadow
     private int itemUseCooldown;
 
     @Shadow
@@ -51,11 +48,6 @@ public abstract class MinecraftClientMixin implements IMinecraftClient {
     @Override
     public void rightClick() {
         doItemUse();
-    }
-
-    @Override
-    public int getCurrentFps() {
-        return currentFps;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package nikosdk3.nugclient.events;
 
 
+import net.minecraft.block.BlockState;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.sound.SoundInstance;
 import net.minecraft.network.packet.Packet;
@@ -8,6 +9,7 @@ import nikosdk3.nugclient.events.event.*;
 
 public class EventStore {
     private static ActiveModulesChangedEvent activeModulesChangedEvent = new ActiveModulesChangedEvent();
+    private static BlockShouldDrawSideEvent blockShouldDrawSideEvent = new BlockShouldDrawSideEvent();
     private static ChangeChatLengthEvent changeChatLengthEvent = new ChangeChatLengthEvent();
     private static CharTypedEvent charTypedEvent = new CharTypedEvent();
     private static KeyEvent keyEvent = new KeyEvent();
@@ -21,6 +23,13 @@ public class EventStore {
 
     public static ActiveModulesChangedEvent activeModulesChangedEvent() {
         return activeModulesChangedEvent;
+    }
+
+    public static BlockShouldDrawSideEvent blockShouldDrawSideEvent(BlockState state) {
+        blockShouldDrawSideEvent.setCancelled(false);
+        blockShouldDrawSideEvent.state = state;
+        blockShouldDrawSideEvent.shouldRenderSide = false;
+        return blockShouldDrawSideEvent;
     }
 
     public static ChangeChatLengthEvent changeChatLengthEvent(int length) {

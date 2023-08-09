@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(SoundSystem.class)
-public class SoundSystemMixin {
+public abstract class SoundSystemMixin {
     @Inject(method = "play(Lnet/minecraft/client/sound/SoundInstance;)V", at = @At("HEAD"))
     private void onPlay(SoundInstance soundInstance, CallbackInfo info) {
         NugClient.eventBus.post(EventStore.playSoundEvent(soundInstance));

@@ -47,7 +47,7 @@ public class NugClient implements ClientModInitializer {
                 .setPrettyPrinting()
                 .create();
 
-        configFile = new File(FabricLoader.getInstance().getGameDirectory(), "nug-client.json");
+        configFile = new File(FabricLoader.getInstance().getGameDir().toFile(), "nug-client.json");
 
         CommandManager.init();
         ModuleManager.init();

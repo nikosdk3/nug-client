@@ -3,18 +3,22 @@
   "package": "nikosdk3.nugclient.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "BlockMixin"
   ],
   "client": [
     "ChatHudMixin",
+    "ChunkAccessor",
+    "ClientPlayNetworkHandlerAccessor",
     "ClientPlayNetworkHandlerMixin",
+    "ClientWorldMixin",
+    "GameRendererMixin",
     "InGameHudMixin",
     "KeyBindingMixin",
     "KeyboardMixin",
     "LightmapTextureManagerMixin",
     "MinecraftClientMixin",
     "PlayerMoveC2SPacketMixin",
-    "SoundSystemMixin",
-    "WorldRendererMixin"
+    "SoundSystemMixin"
   ],
   "injectors": {
     "defaultRequire": 1

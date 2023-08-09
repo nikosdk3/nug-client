@@ -14,7 +14,7 @@ public class NoFall extends Module {
 
     @Subscribe
     private void onSendPacket(SendPacketEvent event) {
-        if (event.packet instanceof PlayerMoveC2SPacket) {
+        if (mc.player.fallDistance > 0.0 && event.packet instanceof PlayerMoveC2SPacket) {
             ((IPlayerMoveC2SPacket) event.packet).setOnGround(true);
         }
     }

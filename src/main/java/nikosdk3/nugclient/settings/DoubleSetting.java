@@ -46,37 +46,37 @@ public class DoubleSetting extends Setting<Double>{
         private Consumer<Setting<Double>> onModuleActivated;
         private Double min, max;
 
-        public DoubleSetting.Builder name(String name) {
+        public Builder name(String name) {
             this.name = name;
             return this;
         }
 
-        public DoubleSetting.Builder description(String description) {
+        public Builder description(String description) {
             this.description = description;
             return this;
         }
 
-        public DoubleSetting.Builder defaultValue(Double defaultValue){
+        public Builder defaultValue(Double defaultValue){
             this.defaultValue = defaultValue;
             return this;
         }
 
-        public DoubleSetting.Builder onChanged(Consumer<Double> onChanged){
+        public Builder onChanged(Consumer<Double> onChanged){
             this.onChanged = onChanged;
             return this;
         }
 
-        public DoubleSetting.Builder onModuleActivated(Consumer<Setting<Double>> onModuleActivated){
+        public Builder onModuleActivated(Consumer<Setting<Double>> onModuleActivated){
             this.onModuleActivated = onModuleActivated;
             return this;
         }
 
-        public DoubleSetting.Builder min(double min){
+        public Builder min(double min){
             this.min = min;
             return this;
         }
 
-        public DoubleSetting.Builder max(double max){
+        public Builder max(double max){
             this.max = max;
             return this;
         }
