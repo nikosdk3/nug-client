@@ -6,6 +6,7 @@
     "BlockMixin"
   ],
   "client": [
+    "BackgroundRendererMixin",
     "ChatHudMixin",
     "ChunkAccessor",
     "ClientPlayNetworkHandlerAccessor",
@@ -16,6 +17,7 @@
     "KeyBindingMixin",
     "KeyboardMixin",
     "LightmapTextureManagerMixin",
+    "LivingEntityRendererMixin",
     "MinecraftClientMixin",
     "PlayerMoveC2SPacketMixin",
     "SoundSystemMixin"

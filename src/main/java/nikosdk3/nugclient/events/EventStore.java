@@ -8,18 +8,18 @@ import net.minecraft.network.packet.Packet;
 import nikosdk3.nugclient.events.event.*;
 
 public class EventStore {
-    private static ActiveModulesChangedEvent activeModulesChangedEvent = new ActiveModulesChangedEvent();
-    private static BlockShouldDrawSideEvent blockShouldDrawSideEvent = new BlockShouldDrawSideEvent();
-    private static ChangeChatLengthEvent changeChatLengthEvent = new ChangeChatLengthEvent();
-    private static CharTypedEvent charTypedEvent = new CharTypedEvent();
-    private static KeyEvent keyEvent = new KeyEvent();
-    private static ModuleBindChangedEvent moduleBindChangedEvent = new ModuleBindChangedEvent();
-    private static ModuleVisibilityChangedEvent moduleVisibilityChangedEvent = new ModuleVisibilityChangedEvent();
-    private static PlaySoundEvent playSoundEvent = new PlaySoundEvent();
-    private static Render2DEvent render2DEvent = new Render2DEvent();
-    private static RenderEvent renderEvent = new RenderEvent();
-    private static SendPacketEvent sendPacketEvent = new SendPacketEvent();
-    private static TickEvent tickEvent = new TickEvent();
+    private static final ActiveModulesChangedEvent activeModulesChangedEvent = new ActiveModulesChangedEvent();
+    private static final BlockShouldDrawSideEvent blockShouldDrawSideEvent = new BlockShouldDrawSideEvent();
+    private static final ChangeChatLengthEvent changeChatLengthEvent = new ChangeChatLengthEvent();
+    private static final CharTypedEvent charTypedEvent = new CharTypedEvent();
+    private static final KeyEvent keyEvent = new KeyEvent();
+    private static final ModuleBindChangedEvent moduleBindChangedEvent = new ModuleBindChangedEvent();
+    private static final ModuleVisibilityChangedEvent moduleVisibilityChangedEvent = new ModuleVisibilityChangedEvent();
+    private static final PlaySoundEvent playSoundEvent = new PlaySoundEvent();
+    private static final Render2DEvent render2DEvent = new Render2DEvent();
+    private static final RenderEvent renderEvent = new RenderEvent();
+    private static final SendPacketEvent sendPacketEvent = new SendPacketEvent();
+    private static final TickEvent tickEvent = new TickEvent();
 
     public static ActiveModulesChangedEvent activeModulesChangedEvent() {
         return activeModulesChangedEvent;

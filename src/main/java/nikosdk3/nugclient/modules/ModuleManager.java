@@ -16,9 +16,9 @@ import org.lwjgl.glfw.GLFW;
 import java.util.*;
 
 public class ModuleManager {
-    private static List<Module> modules = new ArrayList<>();
-    private static Map<Category, List<Module>> groups = new HashMap<>();
-    private static List<Module> active = new ArrayList<>();
+    private static final List<Module> modules = new ArrayList<>();
+    private static final Map<Category, List<Module>> groups = new HashMap<>();
+    private static final List<Module> active = new ArrayList<>();
     public static Module moduleToBind;
 
     public static void init() {
@@ -130,5 +130,7 @@ public class ModuleManager {
         addModule(new Position());
         addModule(new StorageESP());
         addModule(new XRay());
+        addModule(new Chams());
+        addModule(new AntiFog());
     }
 }

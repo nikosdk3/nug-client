@@ -10,6 +10,8 @@ import net.minecraft.util.math.Vec3d;
 import nikosdk3.nugclient.NugClient;
 import nikosdk3.nugclient.events.EventStore;
 import nikosdk3.nugclient.events.event.RenderEvent;
+import nikosdk3.nugclient.modules.ModuleManager;
+import nikosdk3.nugclient.modules.render.NoHurtCam;
 import nikosdk3.nugclient.utils.RenderUtils;
 import nikosdk3.nugclient.utils.Utils;
 import org.lwjgl.opengl.GL11;
@@ -29,7 +31,7 @@ import static org.lwjgl.opengl.GL32C.glDisable;
 public abstract class GameRendererMixin {
     @Shadow
     @Final
-    private MinecraftClient client;
+    MinecraftClient client;
 
     @Shadow
     @Final
@@ -73,5 +75,11 @@ public abstract class GameRendererMixin {
 
         RenderSystem.applyModelViewMatrix();
         client.getProfiler().pop();
+    }
+
+    @Inject(method = "tiltViewWhenHurt", at = @At("HEAD"), cancellable = true)
+    private void onTiltViewWhenHurt(MatrixStack matrices, float tickDelta, CallbackInfo info) {
+        if(ModuleManager.get(NoHurtCam.class).isActive())
+            info.cancel();
     }
 }

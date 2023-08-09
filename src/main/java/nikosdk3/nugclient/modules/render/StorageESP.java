@@ -19,28 +19,28 @@ public class StorageESP extends Module {
         Both
     }
 
-    private Setting<Mode> mode = addSetting(new EnumSetting.Builder<Mode>()
+    private final Setting<Mode> mode = addSetting(new EnumSetting.Builder<Mode>()
             .name("mode")
             .description("Rendering mode.")
             .defaultValue(Mode.Both)
             .build()
     );
 
-    private Setting<Color> standard = addSetting(new ColorSetting.Builder()
+    private final Setting<Color> standard = addSetting(new ColorSetting.Builder()
             .name("standard")
             .description("Color of chests, barrels, and shulker blocks.")
             .defaultValue(new Color(255, 160, 0, 255))
             .build()
     );
 
-    private Setting<Color> enderChest = addSetting(new ColorSetting.Builder()
+    private final Setting<Color> enderChest = addSetting(new ColorSetting.Builder()
             .name("ender-chest")
             .description("Color of ender chests.")
             .defaultValue(new Color(130, 0, 255, 255))
             .build()
     );
 
-    private Setting<Color> other = addSetting(new ColorSetting.Builder()
+    private final Setting<Color> other = addSetting(new ColorSetting.Builder()
             .name("other")
             .description("Color of furnaces, dispensers, droppers and hoppers")
             .defaultValue(new Color(125, 125, 125, 255))
@@ -66,12 +66,10 @@ public class StorageESP extends Module {
 
                 if (mode.get() == StorageESP.Mode.Lines) {
                     RenderUtils.blockEdges(x, y, z, lineColor);
-//                    System.out.println(lineColor.r + " " + lineColor.g + " " + lineColor.b + " ");
                 }
                 else if (mode.get() == StorageESP.Mode.Sides)
                     RenderUtils.blockSides(x, y, z, sideColor);
                 else {
-//                    System.out.println(x + " " + y + " " + z);
                     RenderUtils.blockEdges(x, y, z, lineColor);
                     RenderUtils.blockSides(x, y, z, sideColor);
                 }
