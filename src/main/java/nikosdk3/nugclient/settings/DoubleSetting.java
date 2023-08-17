@@ -5,8 +5,8 @@ import java.util.function.Consumer;
 public class DoubleSetting extends Setting<Double>{
     private final Double min, max;
 
-    public DoubleSetting(String name, String description, Double defaultValue, Consumer<Double> onChanged, Consumer<Setting<Double>> onModuleActivated, Double min, Double max) {
-        super(name, description, defaultValue, onChanged, onModuleActivated);
+    public DoubleSetting(String name, String description, Double defaultValue, Consumer<Double> onChanged, Double min, Double max) {
+        super(name, description, defaultValue, onChanged);
         this.min = min;
         this.max = max;
     }
@@ -43,7 +43,6 @@ public class DoubleSetting extends Setting<Double>{
         private String name = "undefined", description = "";
         private Double defaultValue;
         private Consumer<Double> onChanged;
-        private Consumer<Setting<Double>> onModuleActivated;
         private Double min, max;
 
         public Builder name(String name) {
@@ -66,11 +65,6 @@ public class DoubleSetting extends Setting<Double>{
             return this;
         }
 
-        public Builder onModuleActivated(Consumer<Setting<Double>> onModuleActivated){
-            this.onModuleActivated = onModuleActivated;
-            return this;
-        }
-
         public Builder min(double min){
             this.min = min;
             return this;
@@ -82,7 +76,7 @@ public class DoubleSetting extends Setting<Double>{
         }
 
         public DoubleSetting build(){
-            return new DoubleSetting(name, description, defaultValue, onChanged, onModuleActivated, min, max);
+            return new DoubleSetting(name, description, defaultValue, onChanged, min, max);
         }
     }
 }

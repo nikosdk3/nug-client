@@ -13,30 +13,21 @@ public abstract class Setting<T> {
     public String usage;
 
     private T value;
-    private T defaultValue;
+    private final T defaultValue;
 
     private final Consumer<T> onChanged;
-    public final Consumer<Setting<T>> onModuleActivated;
 
-    public Setting(String name, String description, T defaultValue, Consumer<T> onChanged, Consumer<Setting<T>> onModuleActivated) {
+    public Setting(String name, String description, T defaultValue, Consumer<T> onChanged) {
         this.name = name;
         this.title = Arrays.stream(name.split("-")).map(StringUtils::capitalize).collect(Collectors.joining(" "));
         this.description = description;
         this.value = defaultValue;
         this.defaultValue = defaultValue;
         this.onChanged = onChanged;
-        this.onModuleActivated = onModuleActivated;
     }
 
     public T get() {
         return value;
-    }
-
-    public void set(T value) {
-        if (!isValidValue(value)) return;
-        this.value = value;
-        if (onChanged != null)
-            onChanged.accept(value);
     }
 
     public void reset() {

@@ -132,5 +132,6 @@ public class ModuleManager {
         addModule(new XRay());
         addModule(new Chams());
         addModule(new AntiFog());
+        addModule(new NoHurtCam());
     }
 }

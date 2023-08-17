@@ -23,9 +23,7 @@ public class NugClient implements ClientModInitializer {
     public static EventBus eventBus = new EventBus();
     public static Gson gson;
 
-    private static MinecraftClient mc;
     private static File configFile;
-
 
     boolean init;
 
@@ -36,9 +34,10 @@ public class NugClient implements ClientModInitializer {
             instance = this;
             return;
         }
+
         System.out.println("Initializing Nug Client.");
 
-        mc = MinecraftClient.getInstance();
+        MinecraftClient mc = MinecraftClient.getInstance();
         Utils.mc = mc;
         EntityUtils.mc = mc;
 
@@ -73,8 +72,10 @@ public class NugClient implements ClientModInitializer {
     public static void loadConfig() {
         if (configFile.exists()) {
             try {
-                Config.instance = gson.fromJson(new FileReader(configFile), Config.class);
-            } catch (FileNotFoundException e) {
+                FileReader reader = new FileReader(configFile);
+                Config.instance = gson.fromJson(reader, Config.class);
+                reader.close();
+            } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }

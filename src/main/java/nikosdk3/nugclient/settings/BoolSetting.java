@@ -3,10 +3,8 @@ package nikosdk3.nugclient.settings;
 import java.util.function.Consumer;
 
 public class BoolSetting extends Setting<Boolean> {
-
-
-    private BoolSetting(String name, String description, Boolean defaultValue, Consumer<Boolean> onChanged, Consumer<Setting<Boolean>> onModuleActivated) {
-        super(name, description, defaultValue, onChanged, onModuleActivated);
+    private BoolSetting(String name, String description, Boolean defaultValue, Consumer<Boolean> onChanged) {
+        super(name, description, defaultValue, onChanged);
     }
 
     @Override
@@ -30,7 +28,6 @@ public class BoolSetting extends Setting<Boolean> {
         private String name = "undefined", description = "";
         private boolean defaultValue;
         private Consumer<Boolean> onChanged;
-        private Consumer<Setting<Boolean>> onModuleActivated;
 
         public Builder name(String name) {
             this.name = name;
@@ -52,13 +49,8 @@ public class BoolSetting extends Setting<Boolean> {
             return this;
         }
 
-        public Builder onModuleActivated(Consumer<Setting<Boolean>> onModuleActivated) {
-            this.onModuleActivated = onModuleActivated;
-            return this;
-        }
-
         public BoolSetting build() {
-            return new BoolSetting(name, description, defaultValue, onChanged, onModuleActivated);
+            return new BoolSetting(name, description, defaultValue, onChanged);
         }
     }
 }
