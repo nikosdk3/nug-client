@@ -2,9 +2,8 @@ package nikosdk3.nugclient.modules;
 
 public enum Category {
     Combat,
-    Movement,
     Player,
+    Movement,
     Render,
     Misc,
-    Setting
 }

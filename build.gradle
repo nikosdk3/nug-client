@@ -22,7 +22,10 @@ dependencies {
 //	 TODO: Baritone
 //	modImplementation "com.github.nikosdk3:baritone:v1.10.1"
 //	include "com.github.nikosdk3:baritone:v1.10.1"
+}
 
+loom {
+	accessWidenerPath = file("src/main/resources/nug-client.accesswidener")
 }
 
 base {

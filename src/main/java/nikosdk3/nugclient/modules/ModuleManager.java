@@ -4,6 +4,7 @@ import com.google.common.eventbus.Subscribe;
 import nikosdk3.nugclient.NugClient;
 import nikosdk3.nugclient.events.EventStore;
 import nikosdk3.nugclient.events.event.KeyEvent;
+import nikosdk3.nugclient.modules.combat.Criticals;
 import nikosdk3.nugclient.modules.misc.LongerChat;
 import nikosdk3.nugclient.modules.movement.*;
 import nikosdk3.nugclient.modules.player.AutoFish;
@@ -22,10 +23,11 @@ public class ModuleManager {
     public static Module moduleToBind;
 
     public static void init() {
-        initMisc();
-        initMovement();
+        initCombat();
         initPlayer();
+        initMovement();
         initRender();
+        initMisc();
     }
 
     public static List<Module> getGroup(Category category) {
@@ -103,8 +105,14 @@ public class ModuleManager {
         getGroup(module.category).add(module);
     }
 
-    private static void initMisc() {
-        addModule(new LongerChat());
+    private static void initCombat() {
+        addModule(new Criticals());
+    }
+
+    private static void initPlayer() {
+        addModule(new AutoFish());
+        addModule(new DeathPos());
+        addModule(new FastUse());
     }
 
     private static void initMovement() {
@@ -117,12 +125,6 @@ public class ModuleManager {
         addModule(new Flight());
     }
 
-    private static void initPlayer() {
-        addModule(new AutoFish());
-        addModule(new DeathPos());
-        addModule(new FastUse());
-    }
-
     private static void initRender() {
         addModule(new ActiveModules());
         addModule(new FullBright());
@@ -133,5 +135,9 @@ public class ModuleManager {
         addModule(new Chams());
         addModule(new AntiFog());
         addModule(new NoHurtCam());
+    }
+
+    private static void initMisc() {
+        addModule(new LongerChat());
     }
 }
