@@ -2,6 +2,7 @@ package nikosdk3.nugclient.modules.render;
 
 import com.google.common.eventbus.Subscribe;
 import net.minecraft.block.entity.*;
+import net.minecraft.client.util.math.MatrixStack;
 import nikosdk3.nugclient.events.event.RenderEvent;
 import nikosdk3.nugclient.modules.Category;
 import nikosdk3.nugclient.modules.Module;
@@ -11,6 +12,7 @@ import nikosdk3.nugclient.settings.Setting;
 import nikosdk3.nugclient.utils.Color;
 import nikosdk3.nugclient.utils.RenderUtils;
 import nikosdk3.nugclient.utils.Utils;
+import org.joml.Matrix4f;
 
 public class StorageESP extends Module {
     public enum Mode {
@@ -55,28 +57,6 @@ public class StorageESP extends Module {
         super(Category.Render, "storage-esp", "Highlights storage blocks.");
     }
 
-    @Subscribe
-    public void onRender(RenderEvent event) {
-        for (BlockEntity blockEntity : Utils.blockEntities()) {
-            getBlockEntityColor(blockEntity);
-            if (render) {
-                int x = blockEntity.getPos().getX();
-                int y = blockEntity.getPos().getY();
-                int z = blockEntity.getPos().getZ();
-
-                if (mode.get() == StorageESP.Mode.Lines) {
-                    RenderUtils.blockEdges(x, y, z, lineColor);
-                }
-                else if (mode.get() == StorageESP.Mode.Sides)
-                    RenderUtils.blockSides(x, y, z, sideColor);
-                else {
-                    RenderUtils.blockEdges(x, y, z, lineColor);
-                    RenderUtils.blockSides(x, y, z, sideColor);
-                }
-            }
-        }
-    }
-
     private void getBlockEntityColor(BlockEntity blockEntity) {
         render = true;
 
@@ -90,8 +70,47 @@ public class StorageESP extends Module {
 
         if (mode.get() == StorageESP.Mode.Sides || mode.get() == StorageESP.Mode.Both) {
             sideColor.set(lineColor);
-            sideColor.a -= 225;
-            if (sideColor.a < 0) sideColor.a = 0;
+            sideColor.a = 25;
+        }
+    }
+
+    private void renderLines(MatrixStack matrixStack) {
+        for (BlockEntity blockEntity : Utils.blockEntities()) {
+            getBlockEntityColor(blockEntity);
+            if (render) {
+                int x = blockEntity.getPos().getX();
+                int y = blockEntity.getPos().getY();
+                int z = blockEntity.getPos().getZ();
+
+                Matrix4f matrix = matrixStack.peek().getPositionMatrix();
+                RenderUtils.blockEdges(matrix, x, y, z, lineColor);
+            }
+        }
+    }
+
+    private void renderSides(MatrixStack matrixStack) {
+        for (BlockEntity blockEntity : Utils.blockEntities()) {
+            getBlockEntityColor(blockEntity);
+            if (render) {
+                int x = blockEntity.getPos().getX();
+                int y = blockEntity.getPos().getY();
+                int z = blockEntity.getPos().getZ();
+
+                Matrix4f matrix = matrixStack.peek().getPositionMatrix();
+                RenderUtils.blockSides(matrix, x, y, z, sideColor);
+            }
+        }
+    }
+
+    @Subscribe
+    public void onRender(RenderEvent event) {
+        if (mode.get() == StorageESP.Mode.Lines) {
+            renderLines(event.matrixStack);
+        } else if (mode.get() == StorageESP.Mode.Sides) {
+            renderSides(event.matrixStack);
+        } else {
+            renderLines(event.matrixStack);
+            renderSides(event.matrixStack);
         }
     }
 }

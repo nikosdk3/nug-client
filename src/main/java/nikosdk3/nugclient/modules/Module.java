@@ -108,7 +108,7 @@ public abstract class Module {
         return key;
     }
 
-    public void setVisible() {
+    public void setVisible(boolean visible) {
         this.visible = visible;
         NugClient.eventBus.post(EventStore.moduleVisibilityChangedEvent());
     }

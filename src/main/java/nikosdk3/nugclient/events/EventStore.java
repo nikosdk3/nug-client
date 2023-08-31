@@ -4,6 +4,7 @@ package nikosdk3.nugclient.events;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.sound.SoundInstance;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.network.packet.Packet;
 import nikosdk3.nugclient.events.event.*;
 
@@ -70,8 +71,8 @@ public class EventStore {
         return render2DEvent;
     }
 
-    public static RenderEvent renderEvent(float tickDelta) {
-        renderEvent.tickDelta = tickDelta;
+    public static RenderEvent renderEvent(MatrixStack matrixStack) {
+        renderEvent.matrixStack = matrixStack;
         return renderEvent;
     }
 

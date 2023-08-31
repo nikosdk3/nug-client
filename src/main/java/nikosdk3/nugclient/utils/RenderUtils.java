@@ -4,54 +4,59 @@ import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormat;
 import net.minecraft.client.render.VertexFormats;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.Vec3d;
-import org.joml.Vector3f;
+import org.joml.Matrix4f;
+import org.lwjgl.opengl.GL11;
 
 import static nikosdk3.nugclient.utils.Utils.mc;
 
 public class RenderUtils {
-    public static Vec3d center;
+    private static final Tessellator lineTessellator = new Tessellator(1000);
+    private static final BufferBuilder lineBufferBuilder = lineTessellator.getBuffer();
 
-    private final static Tessellator lineTessellator = new Tessellator();
-    private final static BufferBuilder lineBufferBuilder = lineTessellator.getBuffer();
+    private static final Tessellator quadTessellator = new Tessellator(1000);
+    private static final BufferBuilder quadBufferBuilder = quadTessellator.getBuffer();
 
-    private final static Tessellator quadTessellator = new Tessellator();
-    private final static BufferBuilder quadBufferBuilder = quadTessellator.getBuffer();
+    public static void applyOffset(MatrixStack matrixStack) {
+        Vec3d camPos = mc.gameRenderer.getCamera().getPos();
+        matrixStack.translate(-camPos.x, -camPos.y, -camPos.z);
+    }
 
     public static void beginLines() {
-        lineBufferBuilder.begin(VertexFormat.DrawMode.LINES, VertexFormats.POSITION_COLOR);
+        lineBufferBuilder.begin(VertexFormat.DrawMode.DEBUG_LINES, VertexFormats.POSITION_COLOR);
     }
 
     public static void endLines() {
         lineTessellator.draw();
     }
 
-    public static void line(double x1, double y1, double z1, double x2, double y2, double z2, Color color) {
-        lineBufferBuilder.vertex(x1, y1, z1).color(color.r, color.g, color.b, color.a).next();
-        lineBufferBuilder.vertex(x2, y2, z2).color(color.r, color.g, color.b, color.a).next();
+    public static void line(Matrix4f matrix, double x1, double y1, double z1, double x2, double y2, double z2, Color color) {
+        lineBufferBuilder.vertex(matrix, (float) x1, (float) y1, (float) z1).color(color.r, color.g, color.b, color.a).next();
+        lineBufferBuilder.vertex(matrix, (float) x2, (float) y2, (float) z2).color(color.r, color.g, color.b, color.a).next();
     }
 
-    public static void blockEdges(int x, int y, int z, Color color) {
-        int x2 = x + 1;
-        int y2 = y + 1;
-        int z2 = z + 1;
+    public static void boxEdges(Matrix4f matrix, double x1, double y1, double z1, double x2, double y2, double z2, Color color) {
+        line(matrix, x1, y1, z1, x2, y1, z1, color);
+        line(matrix, x1, y1, z1, x1, y2, z1, color);
+        line(matrix, x1, y1, z1, x1, y1, z2, color);
 
-        line(x, y, z, x2, y, z, color);
-        line(x, y, z, x, y2, z, color);
-        line(x, y, z, x, y, z2, color);
+        line(matrix, x2, y2, z2, x1, y2, z2, color);
+        line(matrix, x2, y2, z2, x2, y1, z2, color);
+        line(matrix, x2, y2, z2, x2, y2, z1, color);
 
-        line(x2, y2, z2, x, y2, z2, color);
-        line(x2, y2, z2, x2, y, z2, color);
-        line(x2, y2, z2, x2, y2, z, color);
+        line(matrix, x2, y1, z1, x2, y2, z1, color);
+        line(matrix, x1, y1, z2, x1, y2, z2, color);
 
-        line(x2, y, z, x2, y2, z, color);
-        line(x, y, z2, x, y2, z2, color);
+        line(matrix, x2, y1, z1, x2, y1, z2, color);
+        line(matrix, x1, y1, z2, x2, y1, z2, color);
 
-        line(x2, y, z, x2, y, z2, color);
-        line(x, y, z2, x2, y, z2, color);
+        line(matrix, x1, y2, z1, x2, y2, z1, color);
+        line(matrix, x1, y2, z1, x1, y2, z2, color);
+    }
 
-        line(x, y2, z, x2, y2, z, color);
-        line(x, y2, z, x, y2, z2, color);
+    public static void blockEdges(Matrix4f matrix, int x, int y, int z, Color color) {
+        boxEdges(matrix, x, y, z, x + 1, y + 1, z + 1, color);
     }
 
     public static void beginQuads() {
@@ -59,32 +64,29 @@ public class RenderUtils {
     }
 
     public static void endQuads() {
+        GL11.glDisable(GL11.GL_CULL_FACE);
         quadTessellator.draw();
     }
 
-    public static void quad(double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3, double z3, double x4, double y4, double z4, Color color) {
-        quadBufferBuilder.vertex(x1, y1, z1).color(color.r, color.g, color.b, color.a).next();
-        quadBufferBuilder.vertex(x2, y2, z2).color(color.r, color.g, color.b, color.a).next();
-        quadBufferBuilder.vertex(x3, y3, z3).color(color.r, color.g, color.b, color.a).next();
-        quadBufferBuilder.vertex(x4, y4, z4).color(color.r, color.g, color.b, color.a).next();
+    public static void quad(Matrix4f matrix, double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3, double z3, double x4, double y4, double z4, Color color) {
+        quadBufferBuilder.vertex(matrix, (float) x1, (float) y1, (float) z1).color(color.r, color.g, color.b, color.a).next();
+        quadBufferBuilder.vertex(matrix, (float) x2, (float) y2, (float) z2).color(color.r, color.g, color.b, color.a).next();
+        quadBufferBuilder.vertex(matrix, (float) x3, (float) y3, (float) z3).color(color.r, color.g, color.b, color.a).next();
+        quadBufferBuilder.vertex(matrix, (float) x4, (float) y4, (float) z4).color(color.r, color.g, color.b, color.a).next();
     }
 
-    public static void blockSides(int x, int y, int z, Color color) {
-        quad(x, y, z, x + 1, y, z, x + 1, y, z + 1, x, y, z + 1, color); //Bottom
-        quad(x, y + 1, z, x + 1, y + 1, z, x + 1, y + 1, z + 1, x, y + 1, z + 1, color); //Top
+    public static void boxSides(Matrix4f matrix, double x1, double y1, double z1, double x2, double y2, double z2, Color color) {
+        quad(matrix, x1, y1, z1, x1, y1, z2, x2, y1, z2, x2, y1, z1, color); // Bottom
+        quad(matrix, x1, y2, z1, x1, y2, z2, x2, y2, z2, x2, y2, z1, color); // Top
 
-        quad(x, y, z, x + 1, y, z, x + 1, y + 1, z, x, y + 1, z, color); //Front
-        quad(x, y, z + 1, x + 1, y, z + 1, x + 1, y + 1, z + 1, x, y + 1, z + 1, color); //Back
+        quad(matrix, x1, y1, z1, x1, y2, z1, x2, y2, z1, x2, y1, z1, color); // Front
+        quad(matrix, x1, y1, z2, x1, y2, z2, x2, y2, z2, x2, y1, z2, color); // Back
 
-        quad(x, y, z, x, y, z + 1, x, y + 1, z + 1, x, y + 1, z, color);//Left
-        quad(x + 1, y, z, x + 1, y, z + 1, x + 1, y + 1, z + 1, x + 1, y + 1, z, color);//Right
+        quad(matrix, x1, y1, z1, x1, y2, z1, x1, y2, z2, x1, y1, z2, color); // Left
+        quad(matrix, x2, y1, z1, x2, y2, z1, x2, y2, z2, x2, y1, z2, color); // Right
     }
 
-    public static void updateScreenCenter() {
-        Vector3f pos = new Vector3f(0, 0, 1);
-        center = new Vec3d(pos.x, -pos.y, pos.z)
-                .rotateX(-(float) Math.toRadians(mc.gameRenderer.getCamera().getPitch()))
-                .rotateY(-(float) Math.toRadians(mc.gameRenderer.getCamera().getYaw()))
-                .add(mc.gameRenderer.getCamera().getPos());
+    public static void blockSides(Matrix4f matrix, int x, int y, int z, Color color) {
+        boxSides(matrix, x, y, z, x + 1, y + 1, z + 1, color);
     }
 }

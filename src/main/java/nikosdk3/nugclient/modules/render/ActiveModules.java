@@ -54,7 +54,6 @@ public class ActiveModules extends Module {
         if (event.module.isActive()) recalculate();
     }
 
-
     @Subscribe
     private void onRender2D(Render2DEvent event) {
         int y = 1;

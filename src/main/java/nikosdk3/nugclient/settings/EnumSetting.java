@@ -4,7 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.function.Consumer;
 
 public class EnumSetting<T extends Enum<?>> extends Setting<T> {
-    private T[] values;
+    private final T[] values;
 
     private EnumSetting(String name, String description, T defaultValue, Consumer<T> onChanged) {
         super(name, description, defaultValue, onChanged);
@@ -35,8 +35,7 @@ public class EnumSetting<T extends Enum<?>> extends Setting<T> {
         String usage = "";
 
         for (int i = 0; i < values.length; i++) {
-            if (i > 0)
-                usage = "#grayor ";
+            if (i > 0) usage += " #grayor ";
             usage += "#blue" + values[i];
         }
 

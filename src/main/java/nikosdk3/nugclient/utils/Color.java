@@ -53,11 +53,6 @@ public class Color {
         return fromRGBA(r, g, b, a);
     }
 
-    @Override
-    public String toString() {
-        return r + " " + b + " " + g + " " + a;
-    }
-
     public static int fromRGBA(int r, int g, int b, int a) {
         return (r << 16) + (g << 8) + b + (a << 24);
     }
@@ -76,5 +71,10 @@ public class Color {
 
     public static int toRGBAA(int color) {
         return (color >> 24) & 0xFF;
+    }
+
+    @Override
+    public String toString() {
+        return r + " " + g + " " + b + " " + a;
     }
 }
