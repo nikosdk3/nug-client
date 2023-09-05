@@ -43,9 +43,7 @@ public class CommandDispatcher {
                 Utils.sendMessage("#yellowValue of #blue'%s' #yellowis #blue'%s'#yellow.", setting.name, setting.get().toString());
             } else {
                 //Parse setting's value and report usage if error
-                if (setting.parse(String.join(" ", args))) {
-                    Utils.sendMessage("#yellowValue of #blue'%s' #yellowset to #blue%s#yellow.", setting.name, setting.get());
-                } else {
+                if (!setting.parse(String.join(" ", args))) {
                     Utils.sendMessage("#redUsage of #blue'%s' #redis #gray%s#red.", setting.name, setting.getUsage());
                 }
             }

@@ -13,7 +13,6 @@ import nikosdk3.nugclient.settings.Setting;
 import nikosdk3.nugclient.utils.Color;
 import nikosdk3.nugclient.utils.EntityUtils;
 import nikosdk3.nugclient.utils.RenderUtils;
-import org.joml.Matrix4f;
 
 public class ESP extends Module {
     public enum Mode {
@@ -103,20 +102,20 @@ public class ESP extends Module {
         sideColor.a = 25;
     }
 
-    private void render(Entity entity, Matrix4f matrix) {
+    private void render(Entity entity) {
         switch (mode.get()) {
             case Lines -> {
                 Box box = entity.getBoundingBox();
-                RenderUtils.boxEdges(matrix, box.minX, box.minY, box.minZ, box.maxX, box.maxY, box.maxZ, lineColor);
+                RenderUtils.boxEdges(box.minX, box.minY, box.minZ, box.maxX, box.maxY, box.maxZ, lineColor);
             }
             case Sides -> {
                 Box box = entity.getBoundingBox();
-                RenderUtils.boxSides(matrix, box.minX, box.minY, box.minZ, box.maxX, box.maxY, box.maxZ, sideColor);
+                RenderUtils.boxSides(box.minX, box.minY, box.minZ, box.maxX, box.maxY, box.maxZ, sideColor);
             }
             case Both -> {
                 Box box = entity.getBoundingBox();
-                RenderUtils.boxEdges(matrix, box.minX, box.minY, box.minZ, box.maxX, box.maxY, box.maxZ, lineColor);
-                RenderUtils.boxSides(matrix, box.minX, box.minY, box.minZ, box.maxX, box.maxY, box.maxZ, sideColor);
+                RenderUtils.boxEdges(box.minX, box.minY, box.minZ, box.maxX, box.maxY, box.maxZ, lineColor);
+                RenderUtils.boxSides(box.minX, box.minY, box.minZ, box.maxX, box.maxY, box.maxZ, sideColor);
             }
             case Glowing -> entity.setGlowing(true);
         }
@@ -124,15 +123,14 @@ public class ESP extends Module {
 
     @Subscribe
     private void onRender(RenderEvent event) {
-        Matrix4f matrix = event.matrixStack.peek().getPositionMatrix();
         recalculateColor();
         for (Entity entity : mc.world.getEntities()) {
-            if (players.get() && EntityUtils.isPlayer(entity) && entity != mc.player) render(entity, matrix);
-            else if (mobs.get() && EntityUtils.isMob(entity)) render(entity, matrix);
-            else if (animals.get() && EntityUtils.isAnimal(entity)) render(entity, matrix);
-            else if (items.get() && EntityUtils.isItem(entity)) render(entity, matrix);
-            else if (crystals.get() && EntityUtils.isCrystal(entity)) render(entity, matrix);
-            else if (vehicles.get() && EntityUtils.isVehicle(entity)) render(entity, matrix);
+            if (players.get() && EntityUtils.isPlayer(entity) && entity != mc.player) render(entity);
+            else if (mobs.get() && EntityUtils.isMob(entity)) render(entity);
+            else if (animals.get() && EntityUtils.isAnimal(entity)) render(entity);
+            else if (items.get() && EntityUtils.isItem(entity)) render(entity);
+            else if (crystals.get() && EntityUtils.isCrystal(entity)) render(entity);
+            else if (vehicles.get() && EntityUtils.isVehicle(entity)) render(entity);
         }
     }
 }

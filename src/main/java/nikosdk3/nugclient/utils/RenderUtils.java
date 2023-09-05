@@ -1,13 +1,12 @@
 package nikosdk3.nugclient.utils;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormat;
 import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.Vec3d;
-import org.joml.Matrix4f;
-import org.lwjgl.opengl.GL11;
 
 import static nikosdk3.nugclient.utils.Utils.mc;
 
@@ -31,32 +30,32 @@ public class RenderUtils {
         lineTessellator.draw();
     }
 
-    public static void line(Matrix4f matrix, double x1, double y1, double z1, double x2, double y2, double z2, Color color) {
-        lineBufferBuilder.vertex(matrix, (float) x1, (float) y1, (float) z1).color(color.r, color.g, color.b, color.a).next();
-        lineBufferBuilder.vertex(matrix, (float) x2, (float) y2, (float) z2).color(color.r, color.g, color.b, color.a).next();
+    public static void line(double x1, double y1, double z1, double x2, double y2, double z2, Color color) {
+        lineBufferBuilder.vertex((float) x1, (float) y1, (float) z1).color(color.r, color.g, color.b, color.a).next();
+        lineBufferBuilder.vertex((float) x2, (float) y2, (float) z2).color(color.r, color.g, color.b, color.a).next();
     }
 
-    public static void boxEdges(Matrix4f matrix, double x1, double y1, double z1, double x2, double y2, double z2, Color color) {
-        line(matrix, x1, y1, z1, x2, y1, z1, color);
-        line(matrix, x1, y1, z1, x1, y2, z1, color);
-        line(matrix, x1, y1, z1, x1, y1, z2, color);
+    public static void boxEdges(double x1, double y1, double z1, double x2, double y2, double z2, Color color) {
+        line(x1, y1, z1, x2, y1, z1, color);
+        line(x1, y1, z1, x1, y2, z1, color);
+        line(x1, y1, z1, x1, y1, z2, color);
 
-        line(matrix, x2, y2, z2, x1, y2, z2, color);
-        line(matrix, x2, y2, z2, x2, y1, z2, color);
-        line(matrix, x2, y2, z2, x2, y2, z1, color);
+        line(x2, y2, z2, x1, y2, z2, color);
+        line(x2, y2, z2, x2, y1, z2, color);
+        line(x2, y2, z2, x2, y2, z1, color);
 
-        line(matrix, x2, y1, z1, x2, y2, z1, color);
-        line(matrix, x1, y1, z2, x1, y2, z2, color);
+        line(x2, y1, z1, x2, y2, z1, color);
+        line(x1, y1, z2, x1, y2, z2, color);
 
-        line(matrix, x2, y1, z1, x2, y1, z2, color);
-        line(matrix, x1, y1, z2, x2, y1, z2, color);
+        line(x2, y1, z1, x2, y1, z2, color);
+        line(x1, y1, z2, x2, y1, z2, color);
 
-        line(matrix, x1, y2, z1, x2, y2, z1, color);
-        line(matrix, x1, y2, z1, x1, y2, z2, color);
+        line(x1, y2, z1, x2, y2, z1, color);
+        line(x1, y2, z1, x1, y2, z2, color);
     }
 
-    public static void blockEdges(Matrix4f matrix, int x, int y, int z, Color color) {
-        boxEdges(matrix, x, y, z, x + 1, y + 1, z + 1, color);
+    public static void blockEdges(int x, int y, int z, Color color) {
+        boxEdges(x, y, z, x + 1, y + 1, z + 1, color);
     }
 
     public static void beginQuads() {
@@ -64,29 +63,30 @@ public class RenderUtils {
     }
 
     public static void endQuads() {
-        GL11.glDisable(GL11.GL_CULL_FACE);
+        RenderSystem.disableCull();
         quadTessellator.draw();
+        RenderSystem.enableCull();
     }
 
-    public static void quad(Matrix4f matrix, double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3, double z3, double x4, double y4, double z4, Color color) {
-        quadBufferBuilder.vertex(matrix, (float) x1, (float) y1, (float) z1).color(color.r, color.g, color.b, color.a).next();
-        quadBufferBuilder.vertex(matrix, (float) x2, (float) y2, (float) z2).color(color.r, color.g, color.b, color.a).next();
-        quadBufferBuilder.vertex(matrix, (float) x3, (float) y3, (float) z3).color(color.r, color.g, color.b, color.a).next();
-        quadBufferBuilder.vertex(matrix, (float) x4, (float) y4, (float) z4).color(color.r, color.g, color.b, color.a).next();
+    public static void quad(double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3, double z3, double x4, double y4, double z4, Color color) {
+        quadBufferBuilder.vertex((float) x1, (float) y1, (float) z1).color(color.r, color.g, color.b, color.a).next();
+        quadBufferBuilder.vertex((float) x2, (float) y2, (float) z2).color(color.r, color.g, color.b, color.a).next();
+        quadBufferBuilder.vertex((float) x3, (float) y3, (float) z3).color(color.r, color.g, color.b, color.a).next();
+        quadBufferBuilder.vertex((float) x4, (float) y4, (float) z4).color(color.r, color.g, color.b, color.a).next();
     }
 
-    public static void boxSides(Matrix4f matrix, double x1, double y1, double z1, double x2, double y2, double z2, Color color) {
-        quad(matrix, x1, y1, z1, x1, y1, z2, x2, y1, z2, x2, y1, z1, color); // Bottom
-        quad(matrix, x1, y2, z1, x1, y2, z2, x2, y2, z2, x2, y2, z1, color); // Top
+    public static void boxSides(double x1, double y1, double z1, double x2, double y2, double z2, Color color) {
+        quad(x1, y1, z1, x1, y1, z2, x2, y1, z2, x2, y1, z1, color); // Bottom
+        quad(x1, y2, z1, x1, y2, z2, x2, y2, z2, x2, y2, z1, color); // Top
 
-        quad(matrix, x1, y1, z1, x1, y2, z1, x2, y2, z1, x2, y1, z1, color); // Front
-        quad(matrix, x1, y1, z2, x1, y2, z2, x2, y2, z2, x2, y1, z2, color); // Back
+        quad(x1, y1, z1, x1, y2, z1, x2, y2, z1, x2, y1, z1, color); // Front
+        quad(x1, y1, z2, x1, y2, z2, x2, y2, z2, x2, y1, z2, color); // Back
 
-        quad(matrix, x1, y1, z1, x1, y2, z1, x1, y2, z2, x1, y1, z2, color); // Left
-        quad(matrix, x2, y1, z1, x2, y2, z1, x2, y2, z2, x2, y1, z2, color); // Right
+        quad(x1, y1, z1, x1, y2, z1, x1, y2, z2, x1, y1, z2, color); // Left
+        quad(x2, y1, z1, x2, y2, z1, x2, y2, z2, x2, y1, z2, color); // Right
     }
 
-    public static void blockSides(Matrix4f matrix, int x, int y, int z, Color color) {
-        boxSides(matrix, x, y, z, x + 1, y + 1, z + 1, color);
+    public static void blockSides(int x, int y, int z, Color color) {
+        boxSides(x, y, z, x + 1, y + 1, z + 1, color);
     }
 }
