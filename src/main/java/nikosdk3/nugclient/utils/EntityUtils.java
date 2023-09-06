@@ -5,7 +5,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.decoration.EndCrystalEntity;
 import net.minecraft.entity.mob.AmbientEntity;
-import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.entity.mob.Monster;
 import net.minecraft.entity.mob.WaterCreatureEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.GolemEntity;
@@ -22,7 +22,7 @@ public class EntityUtils {
     }
 
     public static boolean isMob(Entity entity) {
-        return entity instanceof MobEntity;
+        return entity instanceof Monster;
     }
 
     public static boolean isAnimal(Entity entity) {

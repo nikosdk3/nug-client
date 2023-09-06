@@ -20,17 +20,17 @@ import nikosdk3.nugclient.utils.RenderUtils;
 import nikosdk3.nugclient.utils.Utils;
 
 public class Tracers extends Module {
-    private final Setting<Color> color = addSetting(new ColorSetting.Builder()
-            .name("color")
-            .description("Color.")
-            .defaultValue(new Color(205, 205, 205, 255))
-            .build()
-    );
-
     private final Setting<Boolean> players = addSetting(new BoolSetting.Builder()
             .name("players")
             .description("Trace players.")
             .defaultValue(true)
+            .build()
+    );
+
+    private final Setting<Color> playersColor = addSetting(new ColorSetting.Builder()
+            .name("players-color")
+            .description("Color for players.")
+            .defaultValue(new Color(255, 255, 255, 50))
             .build()
     );
 
@@ -41,10 +41,25 @@ public class Tracers extends Module {
             .build()
     );
 
+    private final Setting<Color> mobsColor = addSetting(new ColorSetting.Builder()
+            .name("mobs-color")
+            .description("Color for mobs.")
+            .defaultValue(new Color(255, 0, 0, 50))
+            .build()
+    );
+
+
     private final Setting<Boolean> animals = addSetting(new BoolSetting.Builder()
             .name("animals")
             .description("Trace animals.")
             .defaultValue(false)
+            .build()
+    );
+
+    private final Setting<Color> animalsColor = addSetting(new ColorSetting.Builder()
+            .name("animals-color")
+            .description("Color for animals.")
+            .defaultValue(new Color(0, 255, 0, 50))
             .build()
     );
 
@@ -55,15 +70,27 @@ public class Tracers extends Module {
             .build()
     );
 
+    private final Setting<Color> storageColor = addSetting(new ColorSetting.Builder()
+            .name("storage-color")
+            .description("Color for storage blocks.")
+            .defaultValue(new Color(255, 160, 0, 50))
+            .build()
+    );
+
     private Vec3d vec1;
 
     public Tracers() {
         super(Category.Render, "tracers", "Renders lines to entities.");
     }
 
-    public void render(Entity entity) {
+    private void render(Entity entity, Color color) {
         Vec3d vec2 = entity.getPos().add(0, entity.getEyeHeight(entity.getPose()), 0);
-        RenderUtils.line(vec1.x, vec1.y, vec1.z, vec2.x, vec2.y, vec2.z, color.get());
+        RenderUtils.line(vec1.x, vec1.y, vec1.z, vec2.x, vec2.y, vec2.z, color);
+    }
+
+    private void render(BlockEntity blockEntity) {
+        BlockPos pos = blockEntity.getPos();
+        RenderUtils.line(vec1.x, vec1.y, vec1.z, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, storageColor.get());
     }
 
     @Subscribe
@@ -73,16 +100,17 @@ public class Tracers extends Module {
                 .rotateY(-(float) Math.toRadians(mc.player.getYaw()))
                 .add(mc.cameraEntity.getPos()
                         .add(0, mc.cameraEntity.getEyeHeight(mc.cameraEntity.getPose()), 0));
+
         for (Entity entity : mc.world.getEntities()) {
-            if (players.get() && EntityUtils.isPlayer(entity) && entity != mc.player) render(entity);
-            if (mobs.get() && EntityUtils.isMob(entity)) render(entity);
-            if (animals.get() && EntityUtils.isAnimal(entity)) render(entity);
-            if (storage.get()) {
-                for (BlockEntity blockEntity : Utils.blockEntities()) {
-                    if (blockEntity instanceof ChestBlockEntity || blockEntity instanceof ShulkerBoxBlockEntity || blockEntity instanceof BarrelBlockEntity) {
-                        BlockPos pos = blockEntity.getPos();
-                        RenderUtils.line(vec1.x, vec1.y, vec1.z, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, color.get());
-                    }
+            if (players.get() && EntityUtils.isPlayer(entity) && entity != mc.player) render(entity, playersColor.get());
+            else if (mobs.get() && EntityUtils.isMob(entity)) render(entity, mobsColor.get());
+            else if (animals.get() && EntityUtils.isAnimal(entity)) render(entity, animalsColor.get());
+        }
+
+        if (storage.get()) {
+            for (BlockEntity blockEntity : Utils.blockEntities()) {
+                if (blockEntity instanceof ChestBlockEntity || blockEntity instanceof ShulkerBoxBlockEntity || blockEntity instanceof BarrelBlockEntity) {
+                    render(blockEntity);
                 }
             }
         }
