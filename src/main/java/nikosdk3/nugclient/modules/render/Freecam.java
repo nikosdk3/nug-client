@@ -61,7 +61,7 @@ public class Freecam extends Module {
     @Subscribe
     private void onSendPacket(SendPacketEvent event) {
         if (event.packet instanceof ClientCommandC2SPacket || event.packet instanceof PlayerMoveC2SPacket || event.packet instanceof PlayerInputC2SPacket)
-            event.setCancelled(true);
+            event.cancel();
     }
 
     @Subscribe

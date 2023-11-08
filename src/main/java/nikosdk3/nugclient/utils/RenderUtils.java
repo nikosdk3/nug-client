@@ -17,11 +17,6 @@ public class RenderUtils {
     private static final Tessellator quadTessellator = new Tessellator(1000);
     private static final BufferBuilder quadBufferBuilder = quadTessellator.getBuffer();
 
-    public static void applyOffset(MatrixStack matrixStack) {
-        Vec3d camPos = mc.gameRenderer.getCamera().getPos();
-        matrixStack.translate(-camPos.x, -camPos.y, -camPos.z);
-    }
-
     public static void beginLines() {
         lineBufferBuilder.begin(VertexFormat.DrawMode.DEBUG_LINES, VertexFormats.POSITION_COLOR);
     }
@@ -89,4 +84,10 @@ public class RenderUtils {
     public static void blockSides(int x, int y, int z, Color color) {
         boxSides(x, y, z, x + 1, y + 1, z + 1, color);
     }
+
+    public static void applyOffset(MatrixStack matrixStack) {
+        Vec3d camPos = mc.gameRenderer.getCamera().getPos();
+        matrixStack.translate(-camPos.x, -camPos.y, -camPos.z);
+    }
+
 }

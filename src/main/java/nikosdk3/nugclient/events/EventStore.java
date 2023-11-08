@@ -3,6 +3,7 @@ package nikosdk3.nugclient.events;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.sound.SoundInstance;
 import net.minecraft.network.packet.Packet;
 import nikosdk3.nugclient.events.event.*;
@@ -15,6 +16,7 @@ public class EventStore {
     private static final KeyEvent keyEvent = new KeyEvent();
     private static final ModuleBindChangedEvent moduleBindChangedEvent = new ModuleBindChangedEvent();
     private static final ModuleVisibilityChangedEvent moduleVisibilityChangedEvent = new ModuleVisibilityChangedEvent();
+    private static final OpenScreenEvent openScreenEvent = new OpenScreenEvent();
     private static final PlaySoundEvent playSoundEvent = new PlaySoundEvent();
     private static final Render2DEvent render2DEvent = new Render2DEvent();
     private static final RenderEvent renderEvent = new RenderEvent();
@@ -55,6 +57,12 @@ public class EventStore {
 
     public static ModuleVisibilityChangedEvent moduleVisibilityChangedEvent() {
         return moduleVisibilityChangedEvent;
+    }
+
+    public static OpenScreenEvent openScreenEvent(Screen screen) {
+        openScreenEvent.setCancelled(false);
+        openScreenEvent.screen = screen;
+        return openScreenEvent;
     }
 
     public static PlaySoundEvent playSoundEvent(SoundInstance sound) {

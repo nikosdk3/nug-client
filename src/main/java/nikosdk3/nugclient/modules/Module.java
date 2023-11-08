@@ -21,7 +21,7 @@ public abstract class Module {
     public final String title;
     public final String description;
     public final int color;
-    public final List<Setting> settings = new ArrayList<>();
+    public final List<Setting<?>> settings = new ArrayList<>();
     public final boolean setting;
     public final boolean serialize;
     private int key = -1;

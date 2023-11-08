@@ -5,6 +5,7 @@ import nikosdk3.nugclient.NugClient;
 import nikosdk3.nugclient.events.EventStore;
 import nikosdk3.nugclient.events.event.KeyEvent;
 import nikosdk3.nugclient.modules.combat.Criticals;
+import nikosdk3.nugclient.modules.misc.AutoSign;
 import nikosdk3.nugclient.modules.misc.LongerChat;
 import nikosdk3.nugclient.modules.movement.*;
 import nikosdk3.nugclient.modules.player.AutoFish;
@@ -116,31 +117,32 @@ public class ModuleManager {
     }
 
     private static void initMovement() {
-        addModule(new AutoWalk());
         addModule(new AutoJump());
+        addModule(new AutoWalk());
         addModule(new Blink());
-        addModule(new NoFall());
         addModule(new FastLadder());
-        addModule(new Spider());
         addModule(new Flight());
+        addModule(new NoFall());
+        addModule(new Spider());
     }
 
     private static void initRender() {
         addModule(new ActiveModules());
-        addModule(new FullBright());
-        addModule(new Info());
-        addModule(new Position());
-        addModule(new StorageESP());
-        addModule(new XRay());
-        addModule(new Chams());
         addModule(new AntiFog());
-        addModule(new NoHurtCam());
+        addModule(new Chams());
         addModule(new ESP());
         addModule(new Freecam());
+        addModule(new FullBright());
+        addModule(new Info());
+        addModule(new NoHurtCam());
+        addModule(new Position());
+        addModule(new StorageESP());
         addModule(new Tracers());
+        addModule(new XRay());
     }
 
     private static void initMisc() {
+        addModule(new AutoSign());
         addModule(new LongerChat());
     }
 }

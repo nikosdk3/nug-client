@@ -29,7 +29,7 @@ public class NugClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        if(!init){
+        if (!init) {
             init = true;
             instance = this;
             return;

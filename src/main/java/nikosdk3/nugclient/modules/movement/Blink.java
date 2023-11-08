@@ -33,7 +33,7 @@ public class Blink extends Module {
     @Subscribe
     private void onSendPacket(SendPacketEvent event) {
         if (!(event.packet instanceof PlayerMoveC2SPacket)) return;
-        event.setCancelled(true);
+        event.cancel();
 
         PlayerMoveC2SPacket p = (PlayerMoveC2SPacket) event.packet;
         PlayerMoveC2SPacket prev = packets.size() == 0 ? null : packets.get(packets.size() - 1);

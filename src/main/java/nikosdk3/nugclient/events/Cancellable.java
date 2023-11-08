@@ -8,10 +8,7 @@ public class Cancellable implements ICancellable {
         this.cancelled = cancelled;
     }
 
-    public void cancel() {
-        cancelled = true;
-    }
-
+    @Override
     public boolean isCancelled() {
         return cancelled;
     }

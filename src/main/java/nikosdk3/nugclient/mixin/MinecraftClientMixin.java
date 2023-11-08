@@ -2,9 +2,11 @@ package nikosdk3.nugclient.mixin;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.RunArgs;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.world.ClientWorld;
 import nikosdk3.nugclient.NugClient;
 import nikosdk3.nugclient.events.EventStore;
+import nikosdk3.nugclient.events.event.OpenScreenEvent;
 import nikosdk3.nugclient.mixininterface.IMinecraftClient;
 import nikosdk3.nugclient.utils.Utils;
 import org.spongepowered.asm.mixin.Mixin;
@@ -15,6 +17,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(MinecraftClient.class)
 public abstract class MinecraftClientMixin implements IMinecraftClient {
+    @Shadow
+    private static MinecraftClient instance;
+
     @Shadow
     public ClientWorld world;
 
@@ -38,6 +43,14 @@ public abstract class MinecraftClientMixin implements IMinecraftClient {
             world.getProfiler().swap("nug-client_update");
             NugClient.eventBus.post(EventStore.tickEvent());
         }
+    }
+
+    @Inject(method = "setScreen", at = @At("HEAD"), cancellable = true)
+    private void onOpenScreen(Screen screen, CallbackInfo info) {
+        OpenScreenEvent event = EventStore.openScreenEvent(screen);
+        NugClient.eventBus.post(event);
+
+        if(event.isCancelled()) info.cancel();
     }
 
     @Override
