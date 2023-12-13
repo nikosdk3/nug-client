@@ -5,6 +5,7 @@ import nikosdk3.nugclient.NugClient;
 import nikosdk3.nugclient.events.EventStore;
 import nikosdk3.nugclient.events.event.KeyEvent;
 import nikosdk3.nugclient.modules.combat.Criticals;
+import nikosdk3.nugclient.modules.combat.KillAura;
 import nikosdk3.nugclient.modules.misc.AutoSign;
 import nikosdk3.nugclient.modules.misc.LongerChat;
 import nikosdk3.nugclient.modules.movement.*;
@@ -108,6 +109,7 @@ public class ModuleManager {
 
     private static void initCombat() {
         addModule(new Criticals());
+        addModule(new KillAura());
     }
 
     private static void initPlayer() {
