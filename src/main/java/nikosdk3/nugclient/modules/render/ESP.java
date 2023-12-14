@@ -18,8 +18,7 @@ public class ESP extends Module {
     public enum Mode {
         Lines,
         Sides,
-        Both,
-        Glowing
+        Both
     }
 
     private final Setting<Mode> mode = addSetting(new EnumSetting.Builder<Mode>()
@@ -137,16 +136,6 @@ public class ESP extends Module {
         recalculateColor();
     }
 
-    @Override
-    public void onDeactivate() {
-        if (mode.get() == Mode.Glowing) {
-            for (Entity entity : mc.world.getEntities()) {
-                if (entity != mc.player)
-                    entity.setGlowing(false);
-            }
-        }
-    }
-
     private void recalculateColor() {
         // Players
         playersLineColor.set(playersColor.get());
@@ -194,7 +183,6 @@ public class ESP extends Module {
                 RenderUtils.boxEdges(box.minX, box.minY, box.minZ, box.maxX, box.maxY, box.maxZ, lineColor);
                 RenderUtils.boxSides(box.minX, box.minY, box.minZ, box.maxX, box.maxY, box.maxZ, sideColor);
             }
-            case Glowing -> entity.setGlowing(true);
         }
     }
 
