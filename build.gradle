@@ -1,13 +1,17 @@
 plugins {
-	id 'fabric-loom' version '1.2-SNAPSHOT'
+	id 'fabric-loom' version '1.4-SNAPSHOT'
 	id 'maven-publish'
 }
 
 version = project.mod_version
 group = project.maven_group
 
-repositories {
-	maven { url 'https://jitpack.io' }
+base {
+	archivesName = project.archives_base_name
+}
+
+loom {
+	accessWidenerPath = file("src/main/resources/nug-client.accesswidener")
 }
 
 dependencies {
@@ -16,20 +20,13 @@ dependencies {
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-	//Fabric API
-	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fapi_version}"
+	// Fabric API. This is technically optional, but you probably want it anyway.
+	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-//	 TODO: Baritone
-//	modImplementation "com.github.nikosdk3:baritone:v1.10.1"
-//	include "com.github.nikosdk3:baritone:v1.10.1"
-}
+	// Uncomment the following line to enable the deprecated Fabric API modules.
+	// These are included in the Fabric API production distribution and allow you to update your mod to the latest modules at a later more convenient time.
 
-loom {
-	accessWidenerPath = file("src/main/resources/nug-client.accesswidener")
-}
-
-base {
-	archivesName = project.archives_base_name
+	// modImplementation "net.fabricmc.fabric-api:fabric-api-deprecated:${project.fabric_version}"
 }
 
 processResources {
@@ -41,7 +38,6 @@ processResources {
 }
 
 tasks.withType(JavaCompile).configureEach {
-	// Minecraft 1.18 (1.18-pre2) upwards uses Java 17.
 	it.options.release = 17
 }
 
@@ -57,7 +53,7 @@ java {
 
 jar {
 	from("LICENSE") {
-		rename { "${it}_${base.archivesName.get()}"}
+		rename { "${it}_${project.base.archivesName.get()}"}
 	}
 }
 
